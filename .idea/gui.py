@@ -166,7 +166,53 @@ def mainWindow():
         for i in range(len(array)):
             tki.Entry(root_c,textvariable=array[i]).place(x=230,y=52+30*(i+1))
         change=tki.Button(root_c,text='Изменить',font=('Times',16,'italic'),bg=cfon,fg='black').place(x=400,y=250)
+     def option_add():
+        columns=['Название','Артист','Коллаборация','Жанр','Страна','Год','Альбом','BPM','Громкость','Длина','Популярность','Прослушиваний в месяц','Прослушиваний всего','Лейбл']
+        filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx'
+        df = pd.read_excel(filename)
+        num=len(df)
+        root_c=tki.Toplevel(root3)
         
+        root_c.geometry('620x500')
+        root_c.resizable(False, False)
+        root_c.configure(bg=cfon)
+        root_c.title('Добавление записи в БД')
+        for i in range(len(columns)):
+            tki.Label(root_c,text=columns[i],font=('Times',16,'italic'),bg=cfon,fg='black').place(x=10,y=0+35*(i))
+        name=StringVar()
+        a=StringVar()
+        k=StringVar()
+        g=StringVar()
+        c=StringVar()
+        y=StringVar()
+        al=StringVar()
+        bpm=StringVar()
+        l=StringVar()
+        dl=StringVar()
+        p=StringVar()
+        m=StringVar()
+        vs=StringVar()
+        lbl=StringVar()
+        array=[name,a,k,g,c,y,al,bpm,l,dl,p,m,vs,lbl]
+        for i in range(len(array)):
+            tki.Entry(root_c,textvariable=array[i]).place(x=230,y=2+35*(i))
+        change=tki.Button(root_c,text='Добавить',font=('Times',16,'italic'),bg=cfon,fg='black').place(x=400,y=250) 
+    def option_del():
+        columns=['Название','Артист','Коллаборация','Жанр','Страна','Год','Альбом','BPM','Громкость','Длина','Популярность','Прослушиваний в месяц','Прослушиваний всего','Лейбл']
+        filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx'
+        df = pd.read_excel(filename)
+        num=len(df)
+        root_c=tki.Toplevel(root3)
+        root_c.geometry('500x100')
+        root_c.resizable(False, False)
+        root_c.configure(bg=cfon)
+        root_c.title('Удаление записи из БД')
+        Lb1=tki.Label(root_c,text='Выберите номер записи для удаления',font=('Times',16,'italic'),bg=cfon,fg='black')
+        Lb1.grid(row=0,column=0)
+        value=list(range(1,num+2))
+        Vibor = ttk.Combobox(root_c,values=value)
+        Vibor.grid(row=1,column=0)
+        change=tki.Button(root_c,text='Удалить',font=('Times',16,'italic'),bg=cfon,fg='black').grid(row=1,column=1)    
     def open_file():
        filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx'
        df = pd.read_excel(filename)
@@ -192,10 +238,10 @@ def mainWindow():
                          , bg='black', fg='white',command=option_change)
     button_edit.place(x=10,y=10)
     button_add=tki.Button(root3,text='Добавить запись',font=('Times',16,'italic')
-                         , bg='black', fg='white')
+                         , bg='black', fg='white',command=option_add)
     button_add.place(x=10,y=50)
     button_del=tki.Button(root3,text='Удалить запись',font=('Times',16,'italic')
-                         , bg='black', fg='white')
+                         , bg='black', fg='white',command=option_del)
     button_del.place(x=10,y=90)
     button_report=tki.Button(root3,text='Создание отчетов',font=('Times',16,'italic')
                          , bg='black', fg='white')
