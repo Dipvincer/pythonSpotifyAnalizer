@@ -2,10 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
 from pandas.plotting import scatter_matrix
-
-#import squarify as sq
 path=''
 excel_data_df = pd.read_excel("C:\\Users\Admin\\Desktop\\112.xlsx")
 
@@ -34,8 +31,6 @@ def plot_bar_genre_artist_count(choice):
                    color = 'black',    
                    rotation = 0,    
                    verticalalignment =  'center')
-    #fig.show()
-#plot_bar_genre_artist_count('Genre')
 def pie_genre_count():
     """круговая диаграмма жанр/кол-во треков"""
     genre=excel_data_df['Genre']
@@ -59,7 +54,6 @@ def mean_monthaud_per_genre():
     genre=excel_data_df['Genre']
     month_aud=excel_data_df['Monthly auditions']
     num={}
-    
     for i in range(len(genre)):
         if genre[i] not in num:
             num[genre[i]]=month_aud[i]
@@ -83,8 +77,6 @@ def mean_monthaud_per_genre():
         newone[i]=newone[i]/numb2[i]
     plt.pie(newone,)
     plt.legend(bbox_to_anchor = (-0.16, 0.4, 0.25, 0.25), labels = num.keys() )
-    print(num)
-    
 def whisker_all():
     """whisker chart """
     excel_data_df.plot(kind='box', subplots=True)
@@ -103,8 +95,7 @@ def mean_len():
         if years[i] not in year_num:
             year_num[years[i]]=1
         else:
-            year_num[years[i]]+=1
-            
+            year_num[years[i]]+=1      
     sorted_tuple = sorted(year_len.items(), key=lambda x: x[0])        
     year_len=dict(sorted_tuple)     
     sorted_tuple2 = sorted(year_num.items(), key=lambda x: x[0])    
@@ -112,13 +103,19 @@ def mean_len():
     year_num=dict(sorted_tuple2)  
     full_len=list(year_len.values())
     full_num=list(year_num.values())
-    
-    print(full_len)
+
     mean=[]
     for i in range(len(full_len)):
         mean.append(full_len[i]/full_num[i])
-    print(year_len)
-    print(year_num)
-    print(mean)
     plt.bar(year_plot,mean)
-mean_len()  
+def country_pie():
+    """круговая диаграмма с количеством треков по странам"""
+    country=np.array(excel_data_df['Country '])
+    dictionary={}
+    for i in country:
+        if i not in dictionary:
+            dictionary[i]=1
+        else:
+            dictionary[i]+=1
+    plt.pie(dictionary.values(),labels=dictionary.keys())
+
