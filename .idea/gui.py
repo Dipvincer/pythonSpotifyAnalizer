@@ -121,15 +121,30 @@ def mainWindow():
     root3.geometry('620x500')
     root3.resizable(False, False)
     root3.configure(bg=cfon)
-    def data_base():
-        root_db=tki.Toplevel(root3)
-        root_db.title("Работа с базой данных")
-        root_db.geometry('620x500')
-        root_db.resizable(False, False)
-        root_db.configure(bg=cfon)
-        
-    but_bd=tki.Button(root3,text='Работа с базой данных',font=('Times',12,'italic')
-                         , bg='black', fg='white',command=data_base).grid(row=0,column=0)
+    style = ttk.Style()
+    style.theme_use('clam')
+    frame = Frame(root3)
+    frame.pack(pady=20,padx=20,fill=BOTH)
+    def open_file():
+       filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx' #путь к таблице
+       df = pd.read_excel(filename)
+       clear_treeview()
+       tree["column"] = list(df.columns)
+       tree["show"] = "headings"
+       for col in tree["column"]:
+          tree.heading(col, text=col)
+       df_rows = df.to_numpy().tolist()
+       for row in df_rows:
+           tree.insert("", "end", values=row)
+       tree.pack()
+       scroll = Scrollbar(root3,orient=tki.HORIZONTAL)
+       scroll.pack(side = TOP, fill = X,pady=5,padx=5)
+       tree.config(xscrollcommand = scroll.set)
+       scroll.config(command = tree.xview)
+    def clear_treeview():
+       tree.delete(*tree.get_children())
+    tree = ttk.Treeview(frame)
+    open_file()
     # tabs_control=Notebook(root3,height=400,width=500,padding=(10,10,10))
     # tab1=Frame(tabs_control)
     # tabs_control.add(tab1,text="Работа с базой данных")
