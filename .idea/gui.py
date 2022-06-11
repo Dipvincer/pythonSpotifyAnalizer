@@ -145,6 +145,18 @@ def mainWindow():
        tree.delete(*tree.get_children())
     tree = ttk.Treeview(frame)
     open_file()
+    button_edit=tki.Button(root3,text='Редактировать запись',font=('Times',16,'italic')
+                         , bg='black', fg='white')
+    button_edit.place(x=10,y=10)
+    button_add=tki.Button(root3,text='Добавить запись',font=('Times',16,'italic')
+                         , bg='black', fg='white')
+    button_add.place(x=10,y=50)
+    button_del=tki.Button(root3,text='Удалить запись',font=('Times',16,'italic')
+                         , bg='black', fg='white')
+    button_del.place(x=10,y=90)
+    button_report=tki.Button(root3,text='Создание отчетов',font=('Times',16,'italic')
+                         , bg='black', fg='white')
+    button_report.place(x=227,y=170)
     # tabs_control=Notebook(root3,height=400,width=500,padding=(10,10,10))
     # tab1=Frame(tabs_control)
     # tabs_control.add(tab1,text="Работа с базой данных")
@@ -189,7 +201,7 @@ def mainWindow():
         root.deiconify()
     b=tki.Button(root3,text='Назад',font=('Times',12,'italic')
                          , bg='black', fg='white',command=go_back)
-    b.grid(row=0,column=1)
+    b.place(x=550,y=10)
    
     
 
