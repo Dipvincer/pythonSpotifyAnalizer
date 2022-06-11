@@ -1,6 +1,8 @@
 import pandas as pd
 from tkinter import filedialog
 
+df = pd  # глобальная переменная с таблицей
+
 
 def open_file():
     """
@@ -22,6 +24,7 @@ def open_folder():
 
 def open_table_xlsx(file_path):
     """ Загрузка таблицы"""
+    global df
     df = pd.read_excel(file_path)
     print(df.shape)
     df.rename(columns={'Track.Name': 'Track_name', 'Artist.Name': 'Artist_name', 'Date.of.release': 'Date_of_release',
