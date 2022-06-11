@@ -1,9 +1,8 @@
-
 from PIL import ImageTk, Image
 import tkinter as tki
 import tkinter.ttk as ttk
 import os
-from tkinter.ttk import Notebook , Frame ,Button ,Label
+from tkinter.ttk import Notebook , Frame ,Button ,Label , Treeview , Scrollbar
 import numpy as np
 import pandas as pd
 from tkinter import messagebox 
@@ -11,6 +10,8 @@ from settings import cfon, cknop, font, text_path, graph_path
 import service
 from tkinter import colorchooser
 import tkinter.filedialog as fd
+from tkinter import *
+from tkinter import ttk, filedialog
 
 root=tki.Tk()
 root.title('Приложение')
@@ -23,7 +24,7 @@ shrift= (font, 10)
 def click_info():  
     messagebox.showinfo('Справка', 'Авторы : \n Климкин Дмитрий \n Шаймарданов Эдуард \n Ермаков Сергей \n Бутенко Елизавета\nГруппа : БИВ216')  
 
-#это настройки , где можно выбрать цвета для фона и кнопок , а также места для сохранения отчетов
+
 # def settings_window():
 #     def zav1():
 #         service.zav(canvas1, canvas2, combobox, entr1, entr2)
@@ -116,6 +117,10 @@ def settings_w():
     
     
 def mainWindow():
+    def go_back():
+        root3.withdraw()
+        #root3.destroy()
+        root.deiconify()
     root3 = tki.Toplevel(root)
     root3.title("Главное окно")
     root3.geometry('620x500')
@@ -124,9 +129,46 @@ def mainWindow():
     style = ttk.Style()
     style.theme_use('clam')
     frame = Frame(root3)
-    frame.pack(pady=20,padx=20,fill=BOTH)
+    frame.pack(side=BOTTOM,pady=20,padx=20,fill=BOTH)
+    def option_change():
+        columns=['Название','Артист','Коллаборация','Жанр','Страна','Год','Альбом','BPM','Громкость','Длина','Популярность','Прослушиваний в месяц','Прослушиваний всего','Лейбл']
+        filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx'
+        df = pd.read_excel(filename)
+        num=len(df)
+        root_c=tki.Toplevel(root3)
+        
+        root_c.geometry('620x500')
+        root_c.resizable(False, False)
+        root_c.configure(bg=cfon)
+        root_c.title('Изменение записи в БД')
+        Lb1=tki.Label(root_c,text='Выберите номер записи для измения',font=('Times',16,'italic'),bg=cfon,fg='black')
+        Lb1.place(x=10,y=10)
+        value=list(range(1,num+2))
+        Vibor = ttk.Combobox(root_c,values=value)
+        Vibor.place(x=10,y=50)
+        for i in range(len(columns)):
+            tki.Label(root_c,text=columns[i],font=('Times',16,'italic'),bg=cfon,fg='black').place(x=10,y=50+30*(i+1))
+        name=StringVar()
+        a=StringVar()
+        k=StringVar()
+        g=StringVar()
+        c=StringVar()
+        y=StringVar()
+        al=StringVar()
+        bpm=StringVar()
+        l=StringVar()
+        dl=StringVar()
+        p=StringVar()
+        m=StringVar()
+        vs=StringVar()
+        lbl=StringVar()
+        array=[name,a,k,g,c,y,al,bpm,l,dl,p,m,vs,lbl]
+        for i in range(len(array)):
+            tki.Entry(root_c,textvariable=array[i]).place(x=230,y=52+30*(i+1))
+        change=tki.Button(root_c,text='Изменить',font=('Times',16,'italic'),bg=cfon,fg='black').place(x=400,y=250)
+        
     def open_file():
-       filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx' #путь к таблице
+       filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx'
        df = pd.read_excel(filename)
        clear_treeview()
        tree["column"] = list(df.columns)
@@ -137,16 +179,17 @@ def mainWindow():
        for row in df_rows:
            tree.insert("", "end", values=row)
        tree.pack()
-       scroll = Scrollbar(root3,orient=tki.HORIZONTAL)
-       scroll.pack(side = TOP, fill = X,pady=5,padx=5)
+       scroll = Scrollbar(frame,orient=tki.HORIZONTAL)
+       scroll.pack(side = BOTTOM, fill = X,pady=5,padx=5)
        tree.config(xscrollcommand = scroll.set)
        scroll.config(command = tree.xview)
+       
     def clear_treeview():
        tree.delete(*tree.get_children())
     tree = ttk.Treeview(frame)
     open_file()
     button_edit=tki.Button(root3,text='Редактировать запись',font=('Times',16,'italic')
-                         , bg='black', fg='white')
+                         , bg='black', fg='white',command=option_change)
     button_edit.place(x=10,y=10)
     button_add=tki.Button(root3,text='Добавить запись',font=('Times',16,'italic')
                          , bg='black', fg='white')
@@ -157,52 +200,10 @@ def mainWindow():
     button_report=tki.Button(root3,text='Создание отчетов',font=('Times',16,'italic')
                          , bg='black', fg='white')
     button_report.place(x=227,y=170)
-    # tabs_control=Notebook(root3,height=400,width=500,padding=(10,10,10))
-    # tab1=Frame(tabs_control)
-    # tabs_control.add(tab1,text="Работа с базой данных")
-    # tabs_control.grid(row=0,column=0)
-
-    # tab2=Frame(tabs_control)
-    # tabs_control.add(tab2,text="Работа с отчетами")
-    # #tabs_control.grid(row=0,column=1)
     
-    # tab3=Frame(tabs_control)
-    # tabs_control.add(tab3,text="Работа с графиками")
-    # #tabs_control.grid(row=0,column=2)
-    # # Button(tab1,text='Кнопка 1',font=('Times',12,'italic')
-    # #                       , bg='black', fg='white').pack()
-    # # Button(tab1,text='Кнопка 2',font=('Times',12,'italic')
-    # #                       , bg='black', fg='white').grid(row=1,column=0)
-    # # Button(tab1,text='Кнопка 3',font=('Times',12,'italic')
-    # #                       , bg='black', fg='white').grid(row=2,column=0)
-    
-    # root.withdraw()
-    # but_edit = Button(tab1,text="Изменить ")
-
-    # but_edit.grid(column=1,
-    #         row=1,
-    #         padx=40,
-    #         pady=40)
-    # but_add = Button(tab1,text="Добавить")
-
-    # but_add.grid(column=1,
-    #         row=3,
-    #         padx=40,
-    #         pady=40)
-    # but_del = Button(tab1,text="Удалить")
-
-    # but_del.grid(column=1,
-    #         row=5,
-    #         padx=40,
-    #         pady=40)
-    def go_back():
-        root3.withdraw()
-        #root3.destroy()
-        root.deiconify()
     b=tki.Button(root3,text='Назад',font=('Times',12,'italic')
                          , bg='black', fg='white',command=go_back)
     b.place(x=550,y=10)
-   
     
 
     
