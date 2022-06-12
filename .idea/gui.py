@@ -25,78 +25,7 @@ def click_info():
     messagebox.showinfo('Справка', 'Авторы : \n Климкин Дмитрий \n Шаймарданов Эдуард \n Ермаков Сергей \n Бутенко Елизавета\nГруппа : БИВ216')  
 
 
-# def settings_window():
-#     def zav1():
-#         service.zav(canvas1, canvas2, combobox, entr1, entr2)
-#     root2 = tki.Toplevel(root)
-#     root2.title("Настройки")
-#     root2.geometry('620x250+360+280')
-#     root2.resizable(False, False)
-#     root2.configure(bg='LimeGreen')    
-#     tki.Label(root2, text='Место хранения текстовых отчётов', bg='black',
-#               fg="White", bd=3, font=shrift).grid(row=0, column=0, pady=1)
-#     tki.Label(root2, text='Место хранения графических отчётов', bg='black',
-#               fg="White", bd=3, font=shrift).grid(row=1, column=0, pady=1)
-#     tki.Label(root2, text='Шрифт', bg='black', fg="White", bd=3, font='Tahoma').grid(row=2, column=0, pady=1)
-#     tki.Label(root2, text='Цвет фона', bg='black',
-#               fg="White", bd=3, font=shrift).grid(row=3, column=0, pady=1)
-#     tki.Label(root2, text='Цвет кнопок', bg='black',
-#               fg="White", bd=3, font=shrift).grid(row=4, column=0, pady=1)
-#     canvas1 = tki.Canvas(root2, width=20, height=20, bg='LimeGreen')
-#     canvas1.grid(row=3, column=1, sticky='w')
-#     canvas2 = tki.Canvas(root2, width=20, height=20, bg='black')
-#     canvas2.grid(row=4, column=1, sticky='w')
-#     def fon():
-#         fon = colorchooser.askcolor()
-#         root2.lift()
-#         canvas1['bg'] = fon[1]
 
-#     def knop():
-#         knop = colorchooser.askcolor()
-#         root2.lift()
-#         canvas2['bg'] = knop[1]
-
-#     def dialog(entry):       
-#         new_path = fd.askdirectory(initialdir=os.getcwd())
-#         root2.lift()
-#         if new_path:
-#             entry['state'] = 'normal'
-#             entry.delete(0, 'end')
-#             entry.insert(0, os.path.normpath(new_path))
-#             entry['state'] = 'readonly'
-#     def save_set():
-        
-#         service.save_configurations(r'.C:\Users\Admin\Desktop\python_sem',
-#                                     (entr1.get(), entr2.get(), combobox.get(),
-#                                       canvas1['bg'], canvas2['bg']))
-#         root2.destroy()
-#     tki.Button(root2, text="...", bg="Black", fg="White", bd=3,
-#               font=shrift, command=lambda: dialog(entr1)).grid(row=0, column=2, padx=10)
-#     tki.Button(root2, text="...", bg="Black", fg="White", bd=3,
-#               font=shrift, command=lambda: dialog(entr2)).grid(row=1, column=2, padx=10)
-#     tki.Button(root2, text="Выбрать цвет", bg="Black", fg="White", bd=3,
-#               font=shrift, command=fon).grid(row=3, column=1, padx=10)
-#     tki.Button(root2, text="Выбрать цвет", bg="Black", fg="White", bd=3,
-#               font=shrift, command=knop).grid(row=4, column=1, padx=10)
-#     tki.Button(root2, text="Настройки по умолчанию", bg="Black", fg="White", bd=3,
-#               font=shrift, command=zav1).grid(row=5, column=0, padx=10)
-#     tki.Button(root2, text="Сохранить", bg="Black", fg="White", bd=3,
-#               font=shrift, command=save_set).grid(row=5, column=1, padx=10, sticky='e', pady=30)
-#     entr1 = tki.Entry(root2, font='Tahoma', width=30)
-#     entr1.insert(0, text_path)
-#     entr1['state'] = 'readonly'
-#     entr2 = tki.Entry(root2, font='Tahoma', width=30)
-#     entr2.insert(0, graph_path)
-#     entr2['state'] = 'readonly'
-
-#     #Раскрывающийся список
-#     combobox = ttk.Combobox(root2, state='readonly', width=28, font=shrift)
-#     combobox['values'] = ['Tahoma', 'Calibri', 'Times New Roman', 'Arial']
-#     combobox.set(font)
-
-#     entr1.grid(row=0, column=1)
-#     entr2.grid(row=1, column=1)
-#     combobox.grid(row=2, column=1)
     
     
 def settings_w():
@@ -115,17 +44,47 @@ def settings_w():
     tki.Label(root_set, text='Цвет кнопок', bg='black',
                   fg="White", bd=3, font=shrift).grid(row=4, column=0, pady=1)
     
+def user_choice_table(file_path, year):
+    """Автор : Эдуард Шаймарданов"""
+    data = pd.read_excel('C:\\Users\\Admin\\Desktop\\112.xlsx') 
+    data.rename(columns={'Track.Name': 'Track_name', 'Artist.Name': 'Artist_name', 'Date.of.release': 'Date_of_release',
+                       'Beats.Per.Minute': 'Beats_per_minute', 'Loudness..dB..': 'Loudness',
+                       'Monthly.auditions': 'Monthly_auditions', 'Auditions.on.the.track': 'Auditions_on_the_track'}, inplace=True)
+    data.isnull().sum()
+    data.fillna(0)
+    rating = []
+    rating_index = []
+    list_choice = []
+    j = 0
+    for i in range(49):
+        if (data['Date_of_release'][i] == year):
+            rating.append(0.03*float(data["Auditions_on_the_track"][i])/float(audition_max)+float(0.07*data["Popularity"][i]))
+            rating_index.append(i)
+            j+=1
+    dictionary = dict(zip(rating_index, rating))
+    list_d = list(dictionary.items())
+    list_d.sort(key = lambda i: i[1], reverse = True)
+    i = 0
+    while i < j:
+        index = list_d[i][0]
+        string = data["Artist_name"][index] + ' - ' + data["Track_name"][index]
+        list_choice.append(string)
+        i+=1
+    f = open('D:/Python/user_choice.txt', 'w' )
+    for item in list_choice:
+        f.write("%s\n" % item)
+    f.close()
     
 def mainWindow():
     def go_back():
         root3.withdraw()
-        #root3.destroy()
         root.deiconify()
     root3 = tki.Toplevel(root)
     root3.title("Главное окно")
     root3.geometry('620x500')
     root3.resizable(False, False)
     root3.configure(bg=cfon)
+    root.withdraw()
     style = ttk.Style()
     style.theme_use('clam')
     frame = Frame(root3)
@@ -166,7 +125,7 @@ def mainWindow():
         for i in range(len(array)):
             tki.Entry(root_c,textvariable=array[i]).place(x=230,y=52+30*(i+1))
         change=tki.Button(root_c,text='Изменить',font=('Times',16,'italic'),bg=cfon,fg='black').place(x=400,y=250)
-     def option_add():
+    def option_add():
         columns=['Название','Артист','Коллаборация','Жанр','Страна','Год','Альбом','BPM','Громкость','Длина','Популярность','Прослушиваний в месяц','Прослушиваний всего','Лейбл']
         filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx'
         df = pd.read_excel(filename)
@@ -212,7 +171,7 @@ def mainWindow():
         value=list(range(1,num+2))
         Vibor = ttk.Combobox(root_c,values=value)
         Vibor.grid(row=1,column=0)
-        change=tki.Button(root_c,text='Удалить',font=('Times',16,'italic'),bg=cfon,fg='black').grid(row=1,column=1)    
+        change=tki.Button(root_c,text='Удалить',font=('Times',16,'italic'),bg=cfon,fg='black').grid(row=1,column=1)
     def open_file():
        filename = 'C:\\Users\\Admin\\Desktop\\112.xlsx'
        df = pd.read_excel(filename)
@@ -229,7 +188,58 @@ def mainWindow():
        scroll.pack(side = BOTTOM, fill = X,pady=5,padx=5)
        tree.config(xscrollcommand = scroll.set)
        scroll.config(command = tree.xview)
-       
+    
+    
+    def show_report(window_name,report_name):
+        root_show=tki.Toplevel(window_name)
+        root_show.geometry('620x500')
+        root_show.title(report_name)
+        root_show.resizable(False, False)
+        root_show.configure(bg=cfon)
+        tki.Label(root_show,text='Отчет '+report_name,font=('Times',16,'italic')
+                         , bg=cfon, fg='black').pack()
+        if report_name=='My wave':
+            value=['Хорошее настроение','Печальное настроение']
+            curr=tki.StringVar()
+            Vibor = ttk.Combobox(root_show,values=value,textvariable=curr)
+            Vibor.pack()
+            def func(event):
+                curr=Vibor.get()
+            Vibor.bind("<<ComboboxSelected>>", func)
+            # box_value1 = StringVar()
+            # Vibor.bind("<<ComboboxSelected>>", justamethod())
+        if report_name=='User`s choice':
+            df = pd.read_excel('C:\\Users\\Admin\\Desktop\\112.xlsx')
+            value=list(set(list(df['Date of release'])))
+            value.sort()
+            curr=tki.StringVar()
+            Vibor1 = ttk.Combobox(root_show,state='readonly',values=value,textvariable=curr)
+            Vibor1.pack()
+            def func(event):
+                curr=Vibor1.get()
+            Vibor1.bind("<<ComboboxSelected>>", func)
+            user_choice_table('C:\\Users\\Admin\\Desktop\\112.xlsx', curr)
+            text=open(f,encoding='utf-8').readlines()
+            text = ''.join(text)
+            textline = Text(root_show)
+            textline.insert(1.0, text)
+            textline.configure(state='disabled')
+            textline.pack(side=BOTTOM,padx=10,pady=10)
+            scroll = Scrollbar(command=textline.yview)
+            scroll.pack(side=LEFT, fill=Y)
+            textline.config(yscrollcommand=scroll.set)
+            
+        text=open(filename,encoding='utf-8').readlines()
+        text = ''.join(text)
+        textline = Text(root_show)
+        textline.insert(1.0, text)
+        textline.configure(state='disabled')
+        textline.pack(side=BOTTOM,padx=10,pady=10)
+        scroll = Scrollbar(command=textline.yview)
+        scroll.pack(side=LEFT, fill=Y)
+        textline.config(yscrollcommand=scroll.set)   
+
+        
     def clear_treeview():
        tree.delete(*tree.get_children())
     tree = ttk.Treeview(frame)
@@ -254,18 +264,18 @@ def mainWindow():
         tki.Label(tab1,text='Виды отчетов : ',font=('Times',16,'italic')
                          , bg=cfon, fg='black').place(x=10,y=10)
         tki.Button(tab1,text='My wave',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=50)
+                             , bg='black', fg='white',command=lambda:show_report('C:\\Users\\Admin\\Desktop\\test_py.txt',root_rep,'My wave')).place(x=10,y=50)
         tki.Button(tab1,text='Young performers',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=90)
+                             , bg='black', fg='white',command=lambda:show_report('C:\\Users\\Admin\\Desktop\\test_py.txt',root_rep,'Young performers')).place(x=10,y=90)
         tki.Button(tab1,text='Best collaborations',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=130)
+                             , bg='black', fg='white',command=lambda:show_report('C:\\Users\\Admin\\Desktop\\test_py.txt',root_rep,'Best collaborations')).place(x=10,y=130)
         tki.Button(tab1,text='User`s choice',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=170)
+                             , bg='black', fg='white',command=lambda:show_report(root_rep,'User`s choice')).place(x=10,y=170)
         
         tki.Label(tab2,text='Виды отчетов : ',font=('Times',16,'italic')
                          , bg=cfon, fg='black').place(x=10,y=10)
         tki.Button(tab2,text='Жанр/кол-во треков',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=50)
+                             , bg='black', fg='white',command=lambda:show_plot('C:\\Users\\Admin\\Desktop\\python_sem\\settings.png', root_rep)).place(x=10,y=50)
         tki.Button(tab2,text='Исполнитель/кол-во треков',font=('Times',16,'italic')
                              , bg='black', fg='white').place(x=10,y=90)
         tki.Button(tab2,text='Круговая диаграмма : жанры',font=('Times',16,'italic')
@@ -287,6 +297,9 @@ def mainWindow():
                          , bg=cfon, fg='black').place(x=10,y=10)
         tki.Button(tab3,text='Средние показатели по БД',font=('Times',16,'italic')
                              , bg='black', fg='white').place(x=10,y=50)
+        
+        
+        
     button_edit=tki.Button(root3,text='Редактировать запись',font=('Times',16,'italic')
                          , bg='black', fg='white',command=option_change)
     button_edit.place(x=10,y=10)
@@ -297,13 +310,15 @@ def mainWindow():
                          , bg='black', fg='white',command=option_del)
     button_del.place(x=10,y=90)
     button_report=tki.Button(root3,text='Создание отчетов',font=('Times',16,'italic')
-                         , bg='black', fg='white')
+                         , bg='black', fg='white',command=reports_window)
     button_report.place(x=227,y=170)
     
     b=tki.Button(root3,text='Назад',font=('Times',12,'italic')
                          , bg='black', fg='white',command=go_back)
     b.place(x=550,y=10)
     
+    
+        
 
     
 btn_start=tki.Button(root,text='Начать',font=('Times',16,'italic')
