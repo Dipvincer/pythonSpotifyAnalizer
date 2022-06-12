@@ -1,18 +1,14 @@
 import pandas as pd
 import numpy as np
 
-data = pd.read_excel("D:/Python/123.xlsx") 
-data.rename(columns={'Track.Name': 'Track_name', 'Artist.Name': 'Artist_name', 'Date.of.release': 'Date_of_release',
-                       'Beats.Per.Minute': 'Beats_per_minute', 'Loudness..dB..': 'Loudness',
-                       'Monthly.auditions': 'Monthly_auditions', 'Auditions.on.the.track': 'Auditions_on_the_track'}, inplace=True)
-data.isnull().sum()
-data.fillna(0)
 
-# Здесь должен быть путь к файлу
-file_path = "D:/Python/123.xlsx"
+def average_in_year(file_path, data):
+    """
+    Среднее количество прослушиваний по годам
 
-
-def average_in_year(file_path):
+    :param file_path: имя файла
+    :param data: открытая таблица .xlsx
+    """
     years = []
     sum_years = []
     lst = []
@@ -32,13 +28,19 @@ def average_in_year(file_path):
         string = str(years[i]) + "    " + str(sum_years[i])
         lst.append(string)
     lst.append("Итого" + "   " + str(round(sum(sum_years)/len(years))))
-    f = open('D:/Python/average_in_year.txt', 'w' )
+    f = open('Reports/' + file_path, 'w')
     for item in lst:
         f.write("%s\n" % item)
     f.close()
 
 
-def average_length():
+def average_length(file_path, data):
+    """
+    Средняя длина трека
+
+    :param file_path: имя файла
+    :param data: открытая таблица .xlsx
+    """
     years = []
     sum_length = []
     lst = []
@@ -58,13 +60,19 @@ def average_length():
         string = str(years[i]) + "    " + str(sum_length[i])
         lst.append(string)
     lst.append("Итого" + "   " + str(round(sum(sum_length)/len(years))))
-    f = open('D:/Python/average_length.txt', 'w' )
+    f = open('Reports/' + file_path, 'w')
     for item in lst:
         f.write("%s\n" % item)
     f.close()
 
 
-def average_genre(file_path):
+def average_genre(file_path, data):
+    """
+    Среднее по жанрам
+
+    :param file_path: имя файла
+    :param data: открытая таблица .xlsx
+    """
     genre = []
     sum_genre = []
     lst = []
@@ -84,7 +92,7 @@ def average_genre(file_path):
         string = str(genre[i]) + " " * (20-len(genre[i])) + str(sum_genre[i])
         lst.append(string)
     lst.append("Итого" + " " * 15 + str(round(sum(sum_genre)/len(genre))))
-    f = open('D:/Python/average_genre.txt', 'w' )
+    f = open('Reports/' + file_path, 'w')
     for item in lst:
         f.write("%s\n" % item)
     f.close()
