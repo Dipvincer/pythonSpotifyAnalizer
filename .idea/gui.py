@@ -230,10 +230,9 @@ def mainWindow():
        scroll.config(command = tree.xview)
     
     
-    def show_plot(filename,window_name,report_name):
+    def show_plot(filename,window_name):
         root_show=tki.Toplevel(window_name)
         root_show.geometry('620x500')
-        root_show.title(report_name)
         root_show.resizable(False, False)
         root_show.configure(bg=cfon)
         im = PhotoImage(file=filename)
