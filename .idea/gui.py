@@ -43,7 +43,47 @@ def settings_w():
                   fg="White", bd=3, font=shrift).grid(row=3, column=0, pady=1)
     tki.Label(root_set, text='Цвет кнопок', bg='black',
                   fg="White", bd=3, font=shrift).grid(row=4, column=0, pady=1)
-    
+def for_young_performers_table(file_path):
+    """Автор : Эдуард Шаймарданов"""
+    data = pd.read_excel('C:\\Users\\Admin\\Desktop\\112.xlsx') 
+    data.rename(columns={'Track.Name': 'Track_name', 'Artist.Name': 'Artist_name', 'Date.of.release': 'Date_of_release',
+                       'Beats.Per.Minute': 'Beats_per_minute', 'Loudness..dB..': 'Loudness',
+                       'Monthly.auditions': 'Monthly_auditions', 'Auditions.on.the.track': 'Auditions_on_the_track'}, inplace=True)
+    data.isnull().sum()
+    data.fillna(0)
+    countries = []
+    lst = []
+    for i in range(49):
+        if data['Country'][i] not in countries:
+            countries.append(data['Country'][i])
+    array = [[], [], [], [], [], [], [], [], [], [], [], []]
+    k = 0
+    for j in range(len(countries)):
+        list1 = []
+        for i in range(49):
+            if data['Country'][i] == countries[j]:
+                if data["Genre"][i] not in list1:
+                    list1.append(data["Genre"][i])
+        array[j].append(list1)
+    array1 = [[[0, 0]], [[0, 0, 0]], [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],[[0, 0]], [[0]], [[0]], 
+              [[0, 0]], [[0]], [[0]], [[0]], [[0]], [[0]]]
+    for j in range(len(countries)):
+        maximum = 0
+        index_max = 0
+        for k1 in range(len(array[j][0])):
+            for i in range(49):
+                if data['Country'][i] == countries[j]:
+                    if data["Genre"][i] == array[j][0][k1]:
+                        array1[j][0][k1]+=1 
+            if (array1[j][0][k1]>maximum):
+                maximum = array1[j][0][k1]
+                index_max = k1
+        string = countries[j] + " - " + array[j][0][index_max]
+        lst.append(string)
+    f = open('C:\\Users\\Admin\\Desktop\\python_sem\\young_performer.txt', 'w' )
+    for item in lst:
+        f.write("%s\n" % item)
+    f.close()        
 def user_choice_table(file_path, year):
     """Автор : Эдуард Шаймарданов"""
     data = pd.read_excel('C:\\Users\\Admin\\Desktop\\112.xlsx') 
@@ -190,6 +230,15 @@ def mainWindow():
        scroll.config(command = tree.xview)
     
     
+    def show_plot(filename,window_name,report_name):
+        root_show=tki.Toplevel(window_name)
+        root_show.geometry('620x500')
+        root_show.title(report_name)
+        root_show.resizable(False, False)
+        root_show.configure(bg=cfon)
+        im = PhotoImage(file=filename)
+        l = Label(root_show, image=im)
+        l.pack()
     def show_report(window_name,report_name):
         root_show=tki.Toplevel(window_name)
         root_show.geometry('620x500')
@@ -228,16 +277,17 @@ def mainWindow():
             scroll = Scrollbar(command=textline.yview)
             scroll.pack(side=LEFT, fill=Y)
             textline.config(yscrollcommand=scroll.set)
-            
-        text=open(filename,encoding='utf-8').readlines()
-        text = ''.join(text)
-        textline = Text(root_show)
-        textline.insert(1.0, text)
-        textline.configure(state='disabled')
-        textline.pack(side=BOTTOM,padx=10,pady=10)
-        scroll = Scrollbar(command=textline.yview)
-        scroll.pack(side=LEFT, fill=Y)
-        textline.config(yscrollcommand=scroll.set)   
+        if report_name=='Young performers':
+            for_young_performers_table('C:\\Users\\Admin\\Desktop\\112.xlsx')
+            text=open(f,encoding='utf-8').readlines()
+            text = ''.join(text)
+            textline = Text(root_show)
+            textline.insert(1.0, text)
+            textline.configure(state='disabled')
+            textline.pack(side=BOTTOM,padx=10,pady=10)
+            scroll = Scrollbar(command=textline.yview)
+            scroll.pack(side=LEFT, fill=Y)
+            textline.config(yscrollcommand=scroll.set)
 
         
     def clear_treeview():
