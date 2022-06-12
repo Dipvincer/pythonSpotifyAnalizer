@@ -230,14 +230,47 @@ def mainWindow():
        scroll.config(command = tree.xview)
     
     
-    def show_plot(filename,window_name):
+    def show_plot(window_name,plot_name):
         root_show=tki.Toplevel(window_name)
-        root_show.geometry('620x500')
+        root_show.geometry('620x500')        
         root_show.resizable(False, False)
         root_show.configure(bg=cfon)
-        im = PhotoImage(file=filename)
-        l = Label(root_show, image=im)
-        l.pack()
+        if plot_name=='Жанр/кол-во треков':
+            im = PhotoImage(file=plot_bar_genre_artist_count('Genre','genre_count.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        if plot_name=='Исполнитель/кол-во треков':
+            im = PhotoImage(file=plot_bar_genre_artist_count('Artist.Name','genre_count.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        if plot_name=='Жанр/кол-во треков':
+            im = PhotoImage(file=plot_bar_genre_artist_count('Genre','art_count.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        if plot_name=='Круговая диаграмма : жанры':
+            im = PhotoImage(file=pie_genre_count('genre.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        if plot_name=='Гистограмма : громкость/BPM':
+            im = PhotoImage(file=loudness_energy('energy.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        if plot_name=='Среднее кол-во прослушиваний по жанрам':
+            im = PhotoImage(file=mean_monthaud_per_genre('month.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        if plot_name=='Whisker Box':
+            im = PhotoImage(file=whisker_all('whisker.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        if plot_name=='Средняя длина трека по годам':
+            im = PhotoImage(file=mean_len('len.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        if plot_name=='Круговая диаграмма : страны':
+            im = PhotoImage(file=country_pie('mean.png'))
+            l = Label(root_show, image=im)
+            l.pack()
     def show_report(window_name,report_name):
         root_show=tki.Toplevel(window_name)
         root_show.geometry('620x500')
@@ -324,23 +357,22 @@ def mainWindow():
         tki.Label(tab2,text='Виды отчетов : ',font=('Times',16,'italic')
                          , bg=cfon, fg='black').place(x=10,y=10)
         tki.Button(tab2,text='Жанр/кол-во треков',font=('Times',16,'italic')
-                             , bg='black', fg='white',command=lambda:show_plot('C:\\Users\\Admin\\Desktop\\python_sem\\settings.png', root_rep)).place(x=10,y=50)
+                             , bg='black', fg='white',command=lambda:show_plot( root_rep,'Жанр/кол-во треков')).place(x=10,y=50)
         tki.Button(tab2,text='Исполнитель/кол-во треков',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=90)
+                             , bg='black', fg='white',command=lambda:show_plot( root_rep,'Исполнитель/кол-во треков')).place(x=10,y=90)
         tki.Button(tab2,text='Круговая диаграмма : жанры',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=130)
+                             , bg='black', fg='white',command=lambda:show_plot( root_rep,'Круговая диаграмма : жанры')).place(x=10,y=130)
         tki.Button(tab2,text='Гистограмма : громкость/BPM',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=170)
+                             , bg='black', fg='white',command=lambda:show_plot( root_rep,'Гистограмма : громкость/BPM')).place(x=10,y=170)
         tki.Button(tab2,text='Среднее кол-во прослушиваний по жанрам',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=210)
+                             , bg='black', fg='white',command=lambda:show_plot( root_rep,'Среднее кол-во прослушиваний по жанрам')).place(x=10,y=210)
         tki.Button(tab2,text='Whisker Box',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=250)
+                             , bg='black', fg='white',command=lambda:show_plot( root_rep,'Whisker Box')).place(x=10,y=250)
         tki.Button(tab2,text='Средняя длина трека по годам',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=290)
-        tki.Button(tab2,text='Гистограмма : громкость/BPM',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=330)
+                             , bg='black', fg='white',command=lambda:show_plot( root_rep,'Средняя длина трека по годам')).place(x=10,y=290)
+       
         tki.Button(tab2,text='Круговая диаграмма : страны',font=('Times',16,'italic')
-                             , bg='black', fg='white').place(x=10,y=370)
+                             , bg='black', fg='white',command=lambda:show_plot( root_rep,'Круговая диаграмма : страны')).place(x=10,y=330)
         
         tki.Label(tab3,text='Среднее ',font=('Times',16,'italic')
                          , bg=cfon, fg='black').place(x=10,y=10)
