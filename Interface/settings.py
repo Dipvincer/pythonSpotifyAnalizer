@@ -12,6 +12,7 @@ def read_config():
     """
     data = []
     with open(config_path, 'r') as f:
+        # data = f.readlines()
         for line in f:
             data.append(line)
         data = [line.rstrip() for line in data]
