@@ -42,6 +42,7 @@ def average_in_year(file_path):
     for item in lst:
         f.write("%s\n" % item)
     f.close()
+    return file_path
            
 average_in_year(file_path)
 
@@ -70,6 +71,7 @@ def average_length():
     for item in lst:
         f.write("%s\n" % item)
     f.close()
+    return file_path
 
 average_length()
 
@@ -99,6 +101,7 @@ def average_genre(file_path):
     for item in lst:
         f.write("%s\n" % item)
     f.close()
+    return file_path
            
 average_genre(file_path)
 
