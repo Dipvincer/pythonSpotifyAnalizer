@@ -12,14 +12,15 @@ def average_in_year(file_path, data):
     years = []
     sum_years = []
     lst = []
-    for i in range(49):
+    value = len(list(data['Date_of_release']))
+    for i in range(value):
         if data["Date_of_release"][i] not in years:
             years.append(data["Date_of_release"][i])
     years.sort()
     for j in range(len(years)):
         count = 0
         summa = 0
-        for i in range(49):
+        for i in range(value):
             if data["Date_of_release"][i] == years[j]:
                 summa += data["Auditions_on_the_track"][i]
                 count += 1
@@ -32,6 +33,7 @@ def average_in_year(file_path, data):
     for item in lst:
         f.write("%s\n" % item)
     f.close()
+    return 'Reports/' + file_path
 
 
 def average_length(file_path, data):
@@ -44,14 +46,15 @@ def average_length(file_path, data):
     years = []
     sum_length = []
     lst = []
-    for i in range(49):
+    value = len(list(data['Date_of_release']))
+    for i in range(value):
         if data["Date_of_release"][i] not in years:
             years.append(data["Date_of_release"][i])
     years.sort()
     for j in range(len(years)):
         count = 0
         summa = 0
-        for i in range(49):
+        for i in range(value):
             if data["Date_of_release"][i] == years[j]:
                 summa += data["Length"][i]
                 count += 1
@@ -64,6 +67,7 @@ def average_length(file_path, data):
     for item in lst:
         f.write("%s\n" % item)
     f.close()
+    return 'Reports/' + file_path
 
 
 def average_genre(file_path, data):
@@ -76,14 +80,16 @@ def average_genre(file_path, data):
     genre = []
     sum_genre = []
     lst = []
-    for i in range(49):
+    value = len(list(data['Date_of_release']))
+    for i in range(value):
         if data["Genre"][i] not in genre:
             genre.append(data["Genre"][i])
     genre.sort()
     for j in range(len(genre)):
         count = 0
         summa = 0
-        for i in range(49):
+        value = len(list(data['Date_of_release']))
+        for i in range(value):
             if data["Genre"][i] == genre[j]:
                 summa += data["Auditions_on_the_track"][i]
                 count += 1
@@ -96,6 +102,7 @@ def average_genre(file_path, data):
     for item in lst:
         f.write("%s\n" % item)
     f.close()
+    return 'Reports/' + file_path
 
 
 
