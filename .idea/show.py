@@ -1,0 +1,103 @@
+def show_plot(window_name,plot_name):
+        root_show=tki.Toplevel(window_name)
+        root_show.geometry('620x500')        
+        root_show.resizable(False, False)
+        root_show.configure(bg=cfon)
+        if plot_name=='Жанр/кол-во треков':
+            im = PhotoImage(file=plot_bar_genre_artist_count('Genre','genre_count.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        elif plot_name=='Исполнитель/кол-во треков':
+            im = PhotoImage(file=plot_bar_genre_artist_count('Artist.Name','genre_count.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        elif plot_name=='Круговая диаграмма : жанры':
+            im = PhotoImage(file=pie_genre_count('genre.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        elif plot_name=='Гистограмма : громкость/BPM':
+            im = PhotoImage(file=loudness_energy('energy.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        elif plot_name=='Среднее кол-во прослушиваний по жанрам':
+            im = PhotoImage(file=mean_monthaud_per_genre('month.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        elif plot_name=='Whisker Box':
+            im = PhotoImage(file=whisker_all('whisker.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        elif plot_name=='Средняя длина трека по годам':
+            im = PhotoImage(file=mean_len('len.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+        elif plot_name=='Круговая диаграмма : страны':
+            im = PhotoImage(file=country_pie('mean.png'))
+            l = Label(root_show, image=im)
+            l.pack()
+            
+    def show_report(window_name,report_name):
+        root_show=tki.Toplevel(window_name)
+        root_show.geometry('620x500')
+        root_show.title(report_name)
+        root_show.resizable(False, False)
+        root_show.configure(bg=cfon)
+        tki.Label(root_show,text='Отчет '+report_name,font=('Times',16,'italic')
+                         , bg=cfon, fg='black').pack()
+        if report_name=='My wave':
+            value=['Happy','Sad']
+            curr=tki.StringVar()
+            Vibor = ttk.Combobox(root_show,values=value,textvariable=curr)
+            Vibor.pack()
+            def func(event):
+                curr=Vibor.get()
+            Vibor.bind("<<ComboboxSelected>>", func)
+            text=open(f=my_wave_table(curr,'C:\\Users\\Admin\\Desktop\\112.xlsx'),encoding='utf-8').readlines()
+            text = ''.join(text)
+            textline = Text(root_show)
+            textline.insert(1.0, text)
+            textline.configure(state='disabled')
+            textline.pack(side=BOTTOM,padx=10,pady=10)
+            scroll = Scrollbar(command=textline.yview)
+            scroll.pack(side=LEFT, fill=Y)
+            textline.config(yscrollcommand=scroll.set)
+            
+        if report_name=='User`s choice':
+            df = pd.read_excel('C:\\Users\\Admin\\Desktop\\112.xlsx')
+            value=list(set(list(df['Date of release'])))
+            value.sort()
+            curr=tki.StringVar()
+            Vibor1 = ttk.Combobox(root_show,state='readonly',values=value,textvariable=curr)
+            Vibor1.pack()
+            def func(event):
+                curr=Vibor1.get()
+            Vibor1.bind("<<ComboboxSelected>>", func)
+            text=open(f=user_choice_table('C:\\Users\\Admin\\Desktop\\112.xlsx', curr),encoding='utf-8').readlines()
+            text = ''.join(text)
+            textline = Text(root_show)
+            textline.insert(1.0, text)
+            textline.configure(state='disabled')
+            textline.pack(side=BOTTOM,padx=10,pady=10)
+            scroll = Scrollbar(command=textline.yview)
+            scroll.pack(side=LEFT, fill=Y)
+            textline.config(yscrollcommand=scroll.set)
+        if report_name=='Young performers':
+            text=open(f=for_young_performers_table('C:\\Users\\Admin\\Desktop\\112.xlsx'),encoding='utf-8').readlines()
+            text = ''.join(text)
+            textline = Text(root_show)
+            textline.insert(1.0, text)
+            textline.configure(state='disabled')
+            textline.pack(side=BOTTOM,padx=10,pady=10)
+            scroll = Scrollbar(command=textline.yview)
+            scroll.pack(side=LEFT, fill=Y)
+            textline.config(yscrollcommand=scroll.set)
+        if report_name=='Best collaborations'  :
+            text=open(f=best_collaborations_table('C:\\Users\\Admin\\Desktop\\112.xlsx'),encoding='utf-8').readlines()
+            text = ''.join(text)
+            textline = Text(root_show)
+            textline.insert(1.0, text)
+            textline.configure(state='disabled')
+            textline.pack(side=BOTTOM,padx=10,pady=10)
+            scroll = Scrollbar(command=textline.yview)
+            scroll.pack(side=LEFT, fill=Y)
+            textline.config(yscrollcommand=scroll.set)
