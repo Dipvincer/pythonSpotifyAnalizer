@@ -35,9 +35,9 @@ def open_table_xlsx(file_path):
     df = pd.read_excel(file_path)
     print(df.shape)
     df.rename(columns={'Track.Name': 'Track_name', 'Artist.Name': 'Artist_name', 'Date.of.release': 'Date_of_release',
-                         'Beats.Per.Minute': 'Beats_per_minute', 'Loudness..dB..': 'Loudness',
-                         'Monthly.auditions': 'Monthly_auditions', 'Auditions.on.the.track': 'Auditions_on_the_track'},
-                inplace=True)
+                       'Beats.Per.Minute': 'Beats_per_minute', 'Loudness..dB..': 'Loudness',
+                       'Monthly.auditions': 'Monthly_auditions', 'Auditions.on.the.track': 'Auditions_on_the_track'},
+              inplace=True)
     print(df.dtypes)
     return df
 
