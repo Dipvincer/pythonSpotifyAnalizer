@@ -128,8 +128,22 @@ def whisker_all(path, excel_data_df):
     :param excel_data_df: таблица data frame
     :return: глобальный путь к сохраненному изображению
     """
-    excel_data_df.plot(kind='box', subplots=True)
-    plt.gcf().set_size_inches(30,30)
+    data2=excel_data_df['Length.']
+    data3=excel_data_df['Loudness..dB..']
+    data4=excel_data_df['Beats.Per.Minute']
+
+    plt.subplot(1, 3, 1)
+    plt.boxplot(data2) 
+    plt.title("Длина(сек)")
+
+    plt.subplot(1, 3, 2)
+    plt.boxplot(data3) 
+    plt.title("Громкость(db)")
+
+    plt.subplot(1, 3, 3)
+    plt.boxplot(data4) 
+    plt.title("BPM")
+
     plt.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
 
