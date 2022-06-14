@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 import numpy as np
 
 
@@ -9,6 +10,7 @@ def user_choice_table(file_path, year, data):
     :param file_path: имя файла
     :param year: выбор года
     :param data: открытая таблица .xlsx
+    :return: глобальный путь к файлу с отчетом
     """
     rating = []
     rating_index = []
@@ -30,10 +32,11 @@ def user_choice_table(file_path, year, data):
         string = data["Artist_name"][index] + ' - ' + data["Track_name"][index]
         list_choice.append(string)
         i += 1
-    f = open('Reports/' + file_path, 'w')
+    f = open(os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path, 'w')
     for item in list_choice:
         f.write("%s\n" % item)
     f.close()
+    return os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path
 
 
 def for_young_performers_table(file_path, data):
@@ -42,13 +45,14 @@ def for_young_performers_table(file_path, data):
 
     :param file_path: имя файла
     :param data: открытая таблица .xlsx
+    :return: глобальный путь к файлу с отчетом
     """
     countries = []
     lst = []
     list_index = []
     value = len(list(data['Date_of_release']))
     for i in range(value):
-        if data['Country'][i] not in countries:
+        if str(data['Country'][i]) not in countries:
             countries.append(data['Country'][i])
     array = [[0] for elem in countries]
     for j in range(len(countries)):
@@ -83,10 +87,11 @@ def for_young_performers_table(file_path, data):
     for j in range(len(countries)):
         string = str(countries[j]) + " - " + str(array[j][1][list_index[j]])
         lst.append(string)
-    f = open('Reports/' + file_path, 'w')
+    f = open(os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path, 'w')
     for item in lst:
         f.write("%s\n" % item)
     f.close()
+    return os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path
 
 
 def best_collaborations_table(file_path, data):
@@ -95,6 +100,7 @@ def best_collaborations_table(file_path, data):
 
     :param file_path: имя файла
     :param data: открытая таблица .xlsx
+    :return: глобальный путь к файлу с отчетом
     """
     collab = []
     collab_index = []
@@ -123,10 +129,11 @@ def best_collaborations_table(file_path, data):
         string = f"{art} (feat.{coll}) - {track}"
         list_collab.append(string)
         i += 1
-    f = open('Reports/' + file_path, 'w')
+    f = open(os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path, 'w')
     for item in list_collab:
         f.write("%s\n" % item)
     f.close()
+    return os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path
 
 
 def my_wave_table(mood_modification, file_path, data):
@@ -136,6 +143,7 @@ def my_wave_table(mood_modification, file_path, data):
     :param mood_modification: выбор настроения: Happy/Sad
     :param file_path: имя файла
     :param data: открытая таблица .xlsx
+    :return: глобальный путь к файлу с отчетом
     """
     mood = []
     mood_index = []
@@ -168,10 +176,11 @@ def my_wave_table(mood_modification, file_path, data):
             string = f"{art} - {track}"
             list_mood.append(string)
             i += 1
-    f = open('Reports/' + file_path, 'w')
+    f = open(os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path, 'w')
     for item in list_mood:
         f.write("%s\n" % item)
     f.close()
+    return os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path
     
     
 

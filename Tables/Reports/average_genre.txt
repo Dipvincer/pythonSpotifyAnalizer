@@ -1,0 +1,24 @@
+4                   13
+45                  121
+atl hip hop         1012311414
+australian pop      198260449
+big room            148427298
+boy band            68570962
+brostep             1267663246
+canadian hip hop    1143738665
+canadian pop        2074511115
+country rap         971611447
+dance pop           543638565
+dfw rap             1270963002
+edm                 863254545
+electropop          2032029371
+escape room         814347585
+latin               748311758
+panamanian pop      422332075
+pop                 915552464
+pop house           811557866
+r&b en espanol      300331865
+reggaeton           1304858383
+reggaeton flow      923154617
+trap music          985873570
+Total               818317409

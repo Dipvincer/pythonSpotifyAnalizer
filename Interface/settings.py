@@ -38,7 +38,7 @@ def save_settings(report, graph, font_name, back, but):
             f.write(back + '\n')
             f.write(but)
             f.close()
-        messagebox.showinfo('Уведомление', 'Данные записаны!')
+        messagebox.showinfo('Уведомление', 'Данные записаны!\n Перезапустите приложение.')
     else:
         messagebox.showerror('Ошибка', 'Некорректно введены данные!')
 

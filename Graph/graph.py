@@ -1,8 +1,6 @@
 import os
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from pandas.plotting import scatter_matrix
 
 
 def plot_bar_genre_artist_count(choice, path, excel_data_df):
@@ -35,8 +33,10 @@ def plot_bar_genre_artist_count(choice, path, excel_data_df):
                                 color='#191414',
                                 rotation=0,
                                 verticalalignment='center')
-    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
-    return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+
+    global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    fig.savefig(global_path, bbox_inches='tight')
+    return global_path
 
 
 def pie_genre_count(path, excel_data_df):
@@ -58,9 +58,10 @@ def pie_genre_count(path, excel_data_df):
     count_genre = num.values()
     fig, ax = plt.subplots()
     ax.pie(count_genre,)
-    ax.legend(bbox_to_anchor = (-0.16, 0.4, 0.1, 0.1), labels = genre )
-    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
-    return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    ax.legend(bbox_to_anchor=(-0.16, 0.4, 0.1, 0.1), labels=genre)
+    global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    fig.savefig(global_path, bbox_inches='tight')
+    return global_path
 
 
 def loudness_energy(path, excel_data_df):
@@ -71,14 +72,15 @@ def loudness_energy(path, excel_data_df):
     :param excel_data_df: таблица data frame
     :return: глобальный путь к сохраненному изображению
     """
-    loud = excel_data_df['Loudness..dB..']
-    beat = excel_data_df['Beats.Per.Minute']
+    loud = excel_data_df['Loudness']
+    beat = excel_data_df['Beats_per_minute']
     fig, ax = plt.subplots()
     ax.scatter(x=loud, y=beat, marker='o', c='#1DB954', edgecolor='#191414')
     ax.set_xlabel('Громкость(db)')
     ax.set_ylabel('BPM')
-    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
-    return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    fig.savefig(global_path, bbox_inches='tight')
+    return global_path
 
 
 def mean_monthaud_per_genre(path, excel_data_df):
@@ -90,7 +92,7 @@ def mean_monthaud_per_genre(path, excel_data_df):
     :return: глобальный путь к сохраненному изображению
     """
     genre = excel_data_df['Genre']
-    month_aud = excel_data_df['Monthly auditions']
+    month_aud = excel_data_df['Monthly_auditions']
     num = {}
     for i in range(len(genre)):
         if genre[i] not in num:
@@ -116,8 +118,9 @@ def mean_monthaud_per_genre(path, excel_data_df):
     fig, ax = plt.subplots()
     ax.pie(newone,)
     ax.legend(bbox_to_anchor=(-0.16, 0.4, 0.25, 0.25), labels=num.keys())
-    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
-    return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    fig.savefig(global_path, bbox_inches='tight')
+    return global_path
 
 
 def whisker_all(path, excel_data_df):
@@ -128,24 +131,24 @@ def whisker_all(path, excel_data_df):
     :param excel_data_df: таблица data frame
     :return: глобальный путь к сохраненному изображению
     """
-    data2=excel_data_df['Length.']
-    data3=excel_data_df['Loudness..dB..']
-    data4=excel_data_df['Beats.Per.Minute']
+    data2 = excel_data_df['Length']
+    data3 = excel_data_df['Loudness']
+    data4 = excel_data_df['Beats_per_minute']
 
     plt.subplot(1, 3, 1)
-    plt.boxplot(data2) 
+    plt.boxplot(data2)
     plt.title("Длина(сек)")
 
     plt.subplot(1, 3, 2)
-    plt.boxplot(data3) 
+    plt.boxplot(data3)
     plt.title("Громкость(db)")
 
     plt.subplot(1, 3, 3)
-    plt.boxplot(data4) 
+    plt.boxplot(data4)
     plt.title("BPM")
-
-    plt.savefig('GraphImages/' + path,bbox_inches = 'tight')
-    return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    plt.savefig(global_path, bbox_inches='tight')
+    return global_path
 
 
 def mean_len(path, excel_data_df):
@@ -156,8 +159,8 @@ def mean_len(path, excel_data_df):
     :param excel_data_df: таблица data frame
     :return: глобальный путь к сохраненному изображению
     """
-    years = np.array(excel_data_df['Date of release'])
-    length = np.array(excel_data_df['Length.'])
+    years = np.array(excel_data_df['Date_of_release'])
+    length = np.array(excel_data_df['Length'])
     year_len = {}
     year_num = {}
     for i in range(len(years)):
@@ -181,11 +184,12 @@ def mean_len(path, excel_data_df):
     for i in range(len(full_len)):
         mean.append(full_len[i]/full_num[i])
     fig, ax = plt.subplots()
-    ax.bar(year_plot,mean)
+    ax.bar(year_plot, mean)
     ax.set_xlabel('Год')
     ax.set_ylabel('Длина(сек)')
-    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
-    return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    fig.savefig(global_path, bbox_inches='tight')
+    return global_path
 
 
 def country_pie(path, excel_data_df):
@@ -196,7 +200,7 @@ def country_pie(path, excel_data_df):
     :param excel_data_df: таблица data frame
     :return: глобальный путь к сохраненному изображению
     """
-    country = np.array(excel_data_df['Country '])
+    country = np.array(excel_data_df['Country'])
     dictionary = {}
     for i in country:
         if i not in dictionary:
@@ -205,8 +209,9 @@ def country_pie(path, excel_data_df):
             dictionary[i] += 1
     fig, ax = plt.subplots()
     ax.pie(dictionary.values(),labels=dictionary.keys())
-    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
-    return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    fig.savefig(global_path, bbox_inches='tight')
+    return global_path
 
 
 def bar_average_length(path, data):
@@ -238,5 +243,6 @@ def bar_average_length(path, data):
     plt.bar(x, y)
     ax.set_xlabel("Год")
     ax.set_ylabel("Длина трека")
-    plt.savefig('GraphImages/' + path,bbox_inches = 'tight')
-    return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
+    plt.savefig(global_path, bbox_inches='tight')
+    return global_path

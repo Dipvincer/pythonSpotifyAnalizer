@@ -1,11 +1,9 @@
 import tkinter as tki
 import tkinter.ttk as ttk
 import tkinter.font as tf
-from tkinter.ttk import Notebook, Frame, Button, Label, Treeview, Scrollbar
+from tkinter.ttk import Frame, Label, Scrollbar
 from tkinter import *
 import os
-import pandas as pd
-from tkinter import messagebox
 import sys
 sys.path.append(os.path.split(os.path.abspath(__file__))[0] + '\\Interface')
 sys.path.append(os.path.split(os.path.abspath(__file__))[0] + '\\Tables')
@@ -109,14 +107,14 @@ def main_window():
         root_c.resizable(False, False)
         root_c.configure(bg=background_color)
         root_c.title('Изменение записи в БД')
-        lb1 = tki.Label(root_c, text='Выберите номер записи для измения', font=('Times', 16, 'italic'),
+        lb1 = tki.Label(root_c, text='Выберите номер записи для измения', font=(font, 16),
                         bg=background_color, fg=button_color)
         lb1.place(x=10, y=10)
         value = list(range(1, num + 2))
         vibor = ttk.Combobox(root_c, values=value)
         vibor.place(x=10, y=50)
         for i in range(len(columns)):
-            tki.Label(root_c, text=columns[i], font=('Times', 16, 'italic'),
+            tki.Label(root_c, text=columns[i], font=(font, 16),
                       bg=background_color, fg=button_color).place(x=10, y=50 + 30 * (i + 1))
         name = StringVar()
         a = StringVar()
@@ -133,9 +131,11 @@ def main_window():
         vs = StringVar()
         lbl = StringVar()
         array = [name, a, k, g, c, y, al, bpm, l, dl, p, m, vs, lbl]
+        entrys = []
         for i in range(len(array)):
-            tki.Entry(root_c, textvariable=array[i]).place(x=230, y=52 + 30 * (i + 1))
-        change = tki.Button(root_c, text='Изменить', font=('Times', 16, 'italic'),
+            entrys.append(tki.Entry(root_c, textvariable=array[i]))
+            entrys[i].place(x=230, y=52 + 30 * (i + 1))
+        change = tki.Button(root_c, text='Изменить', font=(font, 16),
                             bg=background_color, fg=button_color).place(x=400, y=250)
 
     def option_add():
@@ -143,7 +143,7 @@ def main_window():
         Добавление новых записей в таблицу
         """
         columns = ['Название', 'Артист', 'Коллаборация', 'Жанр', 'Страна', 'Год', 'Альбом', 'BPM', 'Громкость', 'Длина',
-                   'Популярность', 'Прослушиваний в месяц', 'Прослушиваний всего', 'Лейбл']
+                   'Популярность', 'Прослуш. в месяц', 'Прослуш. всего', 'Лейбл']
         num = len(df)
         root_c = tki.Toplevel(root3)
 
@@ -152,48 +152,36 @@ def main_window():
         root_c.configure(bg=background_color)
         root_c.title('Добавление записи в БД')
         for i in range(len(columns)):
-            tki.Label(root_c, text=columns[i], font=('Times', 16, 'italic'),
+            tki.Label(root_c, text=columns[i], font=(font, 16),
                       bg=background_color, fg=button_color).place(x=10, y=0 + 35 * i)
-        name = StringVar()
-        a = StringVar()
-        k = StringVar()
-        g = StringVar()
-        c = StringVar()
-        y = StringVar()
-        al = StringVar()
-        bpm = StringVar()
-        l = StringVar()
-        dl = StringVar()
-        p = StringVar()
-        m = StringVar()
-        vs = StringVar()
-        lbl = StringVar()
-        array = [name, a, k, g, c, y, al, bpm, l, dl, p, m, vs, lbl]
-        for i in range(len(array)):
-            tki.Entry(root_c, textvariable=array[i]).place(x=230, y=2 + 35 * i)
-        change = tki.Button(root_c, text='Добавить', font=('Times', 16, 'italic'),
-                            bg=background_color, fg=button_color).place(x=400, y=250)
+        entrys = []
+        for i in range(14):
+            entrys.append(tki.Entry(root_c))
+            entrys[i].place(x=230, y=2 + 35 * i)
+        change = tki.Button(root_c, text='Добавить', font=(font, 16),
+                            bg=background_color, fg=button_color,
+                            command=lambda: tc.add_data_to_table(file_name, [elem.get() for elem in entrys])).\
+            place(x=400, y=230)
 
     def option_del():
         """
         Удаление строки из таблицы
         """
-        columns = ['Название', 'Артист', 'Коллаборация', 'Жанр', 'Страна', 'Год', 'Альбом', 'BPM', 'Громкость', 'Длина',
-                   'Популярность', 'Прослушиваний в месяц', 'Прослушиваний всего', 'Лейбл']
         num = len(df)
         root_c = tki.Toplevel(root3)
         root_c.geometry('500x100')
         root_c.resizable(False, False)
         root_c.configure(bg=background_color)
         root_c.title('Удаление записи из БД')
-        lb1 = tki.Label(root_c, text='Выберите номер записи для удаления', font=('Times', 16, 'italic'),
+        lb1 = tki.Label(root_c, text='Выберите номер записи для удаления', font=(font, 16),
                         bg=background_color, fg=button_color)
         lb1.grid(row=0, column=0)
         value = list(range(1, num + 2))
         vibor = ttk.Combobox(root_c, values=value)
         vibor.grid(row=1, column=0)
-        change = tki.Button(root_c, text='Удалить', font=('Times', 16, 'italic'),
-                            bg=background_color, fg=button_color).grid(row=1, column=1)
+        change = tki.Button(root_c, text='Удалить', font=(font, 16),
+                            bg=background_color, fg=button_color,
+                            command=lambda: tc.delete_data_from_table(file_name, vibor.get())).grid(row=1, column=1)
 
     def open_file():
         """
@@ -220,7 +208,6 @@ def main_window():
         :param plot_name: вид графика
         """
         root_show = tki.Toplevel(window_name)
-        root_show.geometry('620x500')
         root_show.resizable(False, False)
         root_show.configure(bg=background_color)
         if plot_name == 'Жанр/кол-во треков':
@@ -228,7 +215,7 @@ def main_window():
             l = Label(root_show, image=im)
             l.pack()
         elif plot_name == 'Исполнитель/кол-во треков':
-            im = PhotoImage(file=plot_bar_genre_artist_count('Artist.Name', 'artist_count.png', df))
+            im = PhotoImage(file=plot_bar_genre_artist_count('Artist_name', 'artist_count.png', df))
             l = Label(root_show, image=im)
             l.pack()
         elif plot_name == 'Круговая диаграмма : жанры':
@@ -256,93 +243,59 @@ def main_window():
             l = Label(root_show, image=im)
             l.pack()
 
-    def show_report(window_name, report_name, df):
+    def show_report(window_name, report_name, curr='Nothing'):
         """
         Отображение текстовых отчетов
 
         :param window_name: название окна родителя
         :param report_name: тип отчета
-        :param df: таблица data frame
+        :param curr: аргументы для формирования текстовых отчетов
         """
         root_show = tki.Toplevel(window_name)
         root_show.geometry('620x500')
         root_show.title(report_name)
         root_show.resizable(False, False)
         root_show.configure(bg=background_color)
-        tki.Label(root_show, text='Отчет ' + report_name, font=('Times', 16, 'italic'),
+        tki.Label(root_show, text='Отчет ' + report_name, font=(font, 16),
                   bg=background_color, fg='black').pack()
         if report_name == 'My wave':
             value = ['Happy', 'Sad']
-            curr = tki.StringVar()
-            vibor = ttk.Combobox(root_show, values=value, textvariable=curr)
-            vibor.pack()
-
-            def func(event):
-                curr = vibor.get()
-
-            vibor.bind("<<ComboboxSelected>>", func)
             text = open(my_wave_table(curr, 'my_wave.txt', df), encoding='utf-8').readlines()
-            text = ''.join(text)
-            textline = Text(root_show)
-            textline.insert(1.0, text)
-            textline.configure(state='disabled')
-            textline.pack(side=BOTTOM, padx=10, pady=10)
-            scroll = Scrollbar(command=textline.yview)
-            scroll.pack(side=LEFT, fill=Y)
-            textline.config(yscrollcommand=scroll.set)
-
-        if report_name == 'User`s choice':
-            value = list(set(list(df['Date of release'])))
+        elif report_name == 'User`s choice':
+            value = list(set(list(df['Date_of_release'])))
             value.sort()
-            curr = tki.StringVar()
-            vibor1 = ttk.Combobox(root_show, state='readonly', values=value, textvariable=curr)
-            vibor1.pack()
-
-            def func(event):
-                curr = vibor1.get()
-
-            vibor1.bind("<<ComboboxSelected>>", func)
-            text = open(user_choice_table('user_choice.txt', curr, df), encoding='utf-8').readlines()
-            text = ''.join(text)
-            textline = Text(root_show)
-            textline.insert(1.0, text)
-            textline.configure(state='disabled')
-            textline.pack(side=BOTTOM, padx=10, pady=10)
-            scroll = Scrollbar(command=textline.yview)
-            scroll.pack(side=LEFT, fill=Y)
-            textline.config(yscrollcommand=scroll.set)
-        if report_name == 'Young performers':
+            text = open(user_choice_table('user_choice.txt', int(curr), df), encoding='utf-8').readlines()
+        elif report_name == 'Young performers':
             text = open(for_young_performers_table('for_young.txt', df), encoding='utf-8').readlines()
-            text = ''.join(text)
-            textline = Text(root_show)
-            textline.insert(1.0, text)
-            textline.configure(state='disabled')
-            textline.pack(side=BOTTOM, padx=10, pady=10)
-            scroll = Scrollbar(command=textline.yview)
-            scroll.pack(side=LEFT, fill=Y)
-            textline.config(yscrollcommand=scroll.set)
-        if report_name == 'Best collaborations':
+        elif report_name == 'Best collaborations':
             text = open(best_collaborations_table('best_collab.txt', df), encoding='utf-8').readlines()
-            text = ''.join(text)
-            textline = Text(root_show)
-            textline.insert(1.0, text)
-            textline.configure(state='disabled')
-            textline.pack(side=BOTTOM, padx=10, pady=10)
-            scroll = Scrollbar(command=textline.yview)
-            scroll.pack(side=LEFT, fill=Y)
-            textline.config(yscrollcommand=scroll.set)
+        elif report_name == 'Average years':
+            text = open(average_in_year('average_years.txt', df), encoding='utf-8').readlines()
+        elif report_name == 'Average length':
+            text = open(average_length('average_length.txt', df), encoding='utf-8').readlines()
+        elif report_name == 'Average genre':
+            text = open(average_genre('average_genre.txt', df), encoding='utf-8').readlines()
+
+        text = ''.join(text)
+        textline = Text(root_show)
+        textline.insert(1.0, text)
+        textline.configure(state='disabled')
+        textline.pack(side=BOTTOM, padx=10, pady=10)
+        scroll = Scrollbar(command=textline.yview)
+        scroll.pack(side=LEFT, fill=Y)
+        textline.config(yscrollcommand=scroll.set)
+
     tree = ttk.Treeview(frame)
     open_file()
 
     def reports_window():
         """Окно отчетов"""
         root_rep = tki.Toplevel(root3)
-        root_rep.geometry('620x500')
         root_rep.title('Отчеты')
         root_rep.resizable(False, False)
         root_rep.configure(bg=background_color)
         note = ttk.Notebook(root_rep)
-        note.pack()
+        note.grid()
         tab1 = tki.Frame(note, height=500, width=620, bg=background_color)
         tab2 = tki.Frame(note, height=500, width=620, bg=background_color)
         tab3 = tki.Frame(note, height=500, width=620, bg=background_color)
@@ -352,71 +305,130 @@ def main_window():
         note.add(tab1, text='Текстовые отчеты')
         note.add(tab2, text='Графические отчеты')
         note.add(tab3, text='Средние значения')
-        tki.Label(tab1, text='Виды отчетов : ', font=('Times', 16, 'italic')
-                  , bg=background_color, fg=button_color).place(x=10, y=10)
-        tki.Button(tab1, text='My wave', font=('Times', 16, 'italic'),
-                   bg=button_color, fg='white',
-                   command=lambda: show_report(root_rep, 'My wave', df)).place(x=10, y=50)
-        tki.Button(tab1, text='Young performers', font=('Times', 16, 'italic'),
-                   bg=button_color, fg='white',
-                   command=lambda: show_report(root_rep, 'Young performers', df)).place(x=10, y=90)
-        tki.Button(tab1, text='Best collaborations', font=('Times', 16, 'italic'),
-                   bg=button_color, fg='white',
-                   command=lambda: show_report(root_rep, 'Best collaborations', df)).place(x=10, y=130)
-        tki.Button(tab1, text='User`s choice', font=('Times', 16, 'italic'),
-                   bg=button_color, fg='white',
-                   command=lambda: show_report(root_rep, 'User`s choice', df)).place(x=10, y=170)
 
-        tki.Label(tab2, text='Виды отчетов : ', font=('Times', 16, 'italic'),
-                  bg=background_color, fg=button_color).place(x=10, y=10)
-        tki.Button(tab2, text='Жанр/кол-во треков', font=('Times', 16, 'italic'),
+        # текстовые отчеты
+        tki.Label(tab1, text='Виды отчетов : ', font=(font, 16),
+                  bg=background_color, fg=button_color).grid(row=0, column=0, padx=5, pady=5)
+
+        mood = ['Happy', 'Sad']
+        combo_mood = ttk.Combobox(tab1, state='readonly', values=mood)
+        combo_mood.grid(row=1, column=2, padx=5)
+        combo_mood.current(0)
+
+        tki.Button(tab1, text='My wave', font=(font, 16),
                    bg=button_color, fg='white',
-                   command=lambda: show_plot(root_rep, 'Жанр/кол-во треков')).place(x=10, y=50)
-        tki.Button(tab2, text='Исполнитель/кол-во треков', font=('Times', 16, 'italic'),
+                   command=lambda: show_report(root_rep, 'My wave', combo_mood.get())).\
+            grid(row=1, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Label(tab1, text='Выбор настроения:', font=font,
+                  bg=background_color, fg=button_color).grid(row=1, column=1)
+
+        tki.Button(tab1, text='Young performers', font=(font, 16),
                    bg=button_color, fg='white',
-                   command=lambda: show_plot(root_rep, 'Исполнитель/кол-во треков')).place(x=10, y=90)
-        tki.Button(tab2, text='Круговая диаграмма : жанры', font=('Times', 16, 'italic'),
+                   command=lambda: show_report(root_rep, 'Young performers')).\
+            grid(row=2, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Button(tab1, text='Best collaborations', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_report(root_rep, 'Best collaborations')).\
+            grid(row=3, column=0, padx=5, pady=5, sticky=W)
+
+        years = list(set(list(df['Date_of_release'])))
+        years.sort()
+        combo_years = ttk.Combobox(tab1, state='readonly', values=years)
+        combo_years.grid(row=4, column=2, padx=5)
+        combo_years.current(len(years) - 1)
+
+        tki.Button(tab1, text='User`s choice', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_report(root_rep, 'User`s choice', combo_years.get())).\
+            grid(row=4, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Label(tab1, text='Выбор года:', font=font,
+                  bg=background_color, fg=button_color).grid(row=4, column=1)
+
+        # Графические отчеты
+        tki.Label(tab2, text='Виды отчетов : ', font=(font, 16),
+                  bg=background_color, fg=button_color).grid(row=0, column=0, padx=5, pady=5)
+
+        tki.Button(tab2, text='Жанр/кол-во треков', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_plot(root_rep, 'Жанр/кол-во треков')).\
+            grid(row=1, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Button(tab2, text='Исполнитель/кол-во треков', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_plot(root_rep, 'Исполнитель/кол-во треков')).\
+            grid(row=2, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Button(tab2, text='Круговая диаграмма : жанры', font=(font, 16),
                    bg=button_color,
-                   fg='white', command=lambda: show_plot(root_rep, 'Круговая диаграмма : жанры')).place(x=10, y=130)
-        tki.Button(tab2, text='Гистограмма : громкость/BPM', font=('Times', 16, 'italic'),
-                   bg=button_color, fg='white',
-                   command=lambda: show_plot(root_rep, 'Гистограмма : громкость/BPM')).place(x=10, y=170)
-        tki.Button(tab2, text='Среднее кол-во прослушиваний по жанрам', font=('Times', 16, 'italic'),
-                   bg=button_color, fg='white',
-                   command=lambda: show_plot(root_rep, 'Среднее кол-во прослушиваний по жанрам')).place(x=10, y=210)
-        tki.Button(tab2, text='Whisker Box', font=('Times', 16, 'italic'),
-                   bg=button_color, fg='white',
-                   command=lambda: show_plot(root_rep, 'Whisker Box')).place(x=10, y=250)
-        tki.Button(tab2, text='Средняя длина трека по годам', font=('Times', 16, 'italic'),
-                   bg=button_color, fg='white',
-                   command=lambda: show_plot(root_rep, 'Средняя длина трека по годам')).place(x=10, y=290)
+                   fg='white', command=lambda: show_plot(root_rep, 'Круговая диаграмма : жанры')).\
+            grid(row=3, column=0, padx=5, pady=5, sticky=W)
 
-        tki.Button(tab2, text='Круговая диаграмма : страны', font=('Times', 16, 'italic'),
+        tki.Button(tab2, text='Диаграмма рассеяния: громкость/BPM', font=(font, 16),
                    bg=button_color, fg='white',
-                   command=lambda: show_plot(root_rep, 'Круговая диаграмма : страны')).place(x=10, y=330)
+                   command=lambda: show_plot(root_rep, 'Гистограмма : громкость/BPM')).\
+            grid(row=4, column=0, padx=5, pady=5, sticky=W)
 
-        tki.Label(tab3, text='Среднее ', font=('Times', 16, 'italic')
-                  , bg=background_color, fg=button_color).place(x=10, y=10)
-        tki.Button(tab3, text='Средние показатели по БД', font=('Times', 16, 'italic')
-                   , bg=button_color, fg='white').place(x=10, y=50)
+        tki.Button(tab2, text='Среднее кол-во прослушиваний по жанрам', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_plot(root_rep, 'Среднее кол-во прослушиваний по жанрам')).\
+            grid(row=5, column=0, padx=5, pady=5, sticky=W)
 
-    button_edit = tki.Button(root3, text='Редактировать запись', font=('Times', 16, 'italic')
-                             , bg=button_color, fg='white', command=option_change)
-    button_edit.place(x=10, y=10)
-    button_add = tki.Button(root3, text='Добавить запись', font=('Times', 16, 'italic')
-                            , bg=button_color, fg='white', command=option_add)
-    button_add.place(x=10, y=50)
-    button_del = tki.Button(root3, text='Удалить запись', font=('Times', 16, 'italic')
-                            , bg=button_color, fg='white', command=option_del)
-    button_del.place(x=10, y=90)
-    button_report = tki.Button(root3, text='Создание отчетов', font=('Times', 16, 'italic')
+        tki.Button(tab2, text='Whisker Box', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_plot(root_rep, 'Whisker Box')).\
+            grid(row=6, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Button(tab2, text='Средняя длина трека по годам', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_plot(root_rep, 'Средняя длина трека по годам')).\
+            grid(row=7, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Button(tab2, text='Круговая диаграмма : страны', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_plot(root_rep, 'Круговая диаграмма : страны')).\
+            grid(row=8, column=0, padx=5, pady=5, sticky=W)
+
+        # Отчеты по средним значениям
+        tki.Label(tab3, text='Отчеты по средним показателям', font=(font, 16),
+                  bg=background_color, fg=button_color).grid(row=0, column=0, padx=5, pady=5)
+
+        tki.Button(tab3, text='Среднее количество прослушиваний по годам', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_report(root_rep, 'Average years')).\
+            grid(row=1, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Button(tab3, text='Средняя длина трека', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_report(root_rep, 'Average length')).\
+            grid(row=2, column=0, padx=5, pady=5, sticky=W)
+
+        tki.Button(tab3, text='Среднее по жанрам', font=(font, 16),
+                   bg=button_color, fg='white',
+                   command=lambda: show_report(root_rep, 'Average genre')).\
+            grid(row=3, column=0, padx=5, pady=5, sticky=W)
+
+    tki.Button(root3, text='Добавить запись', font=(font, 16),
+               bg=button_color, fg='white', compound=tki.RIGHT,
+               command=option_add).place(x=10, y=10)
+
+    tki.Button(root3, text='Удалить запись', font=(font, 16),
+               bg=button_color, fg='white',
+               command=option_del).place(x=10, y=60)
+
+    tki.Button(root3, text='Редактировать запись', font=(font, 16),
+               bg=button_color, fg='white', command=option_change).place(x=10, y=110)
+
+    button_report = tki.Button(root3, text='Создание отчетов', font=(font, 16)
                                , bg=button_color, fg='white', command=reports_window)
     button_report.place(x=227, y=170)
 
-    b = tki.Button(root3, text='Назад', font=('Times', 12, 'italic')
+    b = tki.Button(root3, text='Назад', font=(font, 14)
                    , bg=button_color, fg='white', command=go_back)
     b.place(x=550, y=10)
-   
+
 
 root = tki.Tk()
 root.title('Spotify analyzer')

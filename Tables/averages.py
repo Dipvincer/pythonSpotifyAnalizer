@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 
 
 def average_in_year(file_path, data):
@@ -28,12 +29,12 @@ def average_in_year(file_path, data):
     for i in range(len(years)):
         string = str(years[i]) + "    " + str(sum_years[i])
         lst.append(string)
-    lst.append("Итого" + "   " + str(round(sum(sum_years)/len(years))))
-    f = open('Reports/' + file_path, 'w')
+    lst.append("Total" + "   " + str(round(sum(sum_years)/len(years))))
+    f = open(os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path, 'w')
     for item in lst:
         f.write("%s\n" % item)
     f.close()
-    return 'Reports/' + file_path
+    return os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path
 
 
 def average_length(file_path, data):
@@ -62,12 +63,12 @@ def average_length(file_path, data):
     for i in range(len(years)):
         string = str(years[i]) + "    " + str(sum_length[i])
         lst.append(string)
-    lst.append("Итого" + "   " + str(round(sum(sum_length)/len(years))))
-    f = open('Reports/' + file_path, 'w')
+    lst.append("Total" + "   " + str(round(sum(sum_length)/len(years))))
+    f = open(os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path, 'w')
     for item in lst:
         f.write("%s\n" % item)
     f.close()
-    return 'Reports/' + file_path
+    return os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path
 
 
 def average_genre(file_path, data):
@@ -97,12 +98,12 @@ def average_genre(file_path, data):
     for i in range(len(genre)):
         string = str(genre[i]) + " " * (20-len(genre[i])) + str(sum_genre[i])
         lst.append(string)
-    lst.append("Итого" + " " * 15 + str(round(sum(sum_genre)/len(genre))))
-    f = open('Reports/' + file_path, 'w')
+    lst.append("Total" + " " * 15 + str(round(sum(sum_genre)/len(genre))))
+    f = open(os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path, 'w')
     for item in lst:
         f.write("%s\n" % item)
     f.close()
-    return 'Reports/' + file_path
+    return os.path.split(os.path.abspath(__file__))[0] + '\\Reports\\' + file_path
 
 
 
