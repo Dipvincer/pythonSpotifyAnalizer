@@ -1,8 +1,6 @@
 import os
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from pandas.plotting import scatter_matrix
 
 
 def plot_bar_genre_artist_count(choice, path, excel_data_df):
@@ -77,6 +75,8 @@ def loudness_energy(path, excel_data_df):
     beat = excel_data_df['Beats_per_minute']
     fig, ax = plt.subplots()
     ax.scatter(x=loud, y=beat, marker='o', c='#1DB954', edgecolor='#191414')
+    ax.set_xlabel('Громкость(db)')
+    ax.set_ylabel('BPM')
     global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
     fig.savefig(global_path, bbox_inches='tight')
     return global_path
@@ -184,6 +184,8 @@ def mean_len(path, excel_data_df):
         mean.append(full_len[i]/full_num[i])
     fig, ax = plt.subplots()
     ax.bar(year_plot, mean)
+    ax.set_xlabel('Год')
+    ax.set_ylabel('Длина(сек)')
     global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
     fig.savefig(global_path, bbox_inches='tight')
     return global_path

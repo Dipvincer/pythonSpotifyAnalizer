@@ -1,6 +1,7 @@
 import pandas as pd
 import openpyxl
 from tkinter import filedialog
+from tkinter import messagebox
 
 
 def open_file():
@@ -65,11 +66,19 @@ def add_data_to_table(file_path, data):
     :param file_path: путь к файлу
     :param data: добавляемая строчка
     """
+    if data.count('') > 0:
+        messagebox.showerror('Ошибка', 'Не все поля заполнены!')
+        return
+    data_ = []
     wb = openpyxl.load_workbook(file_path)
     ws = wb.active
-    for row in data:
-        ws.append(row)
+    data_.append(ws.max_row + 1)
+    for i in range(len(data)):
+        data_.append(data[i])
+    ws.append(data_)
     wb.save(file_path)
+    messagebox.showinfo('Успех', 'Изменения успешно внесены!\n Для отображения изменений вернитесь в главное меню'
+                                 ' и нажмите кнопку Начать')
 
 
 def delete_data_from_table(file_path, index):
@@ -79,11 +88,16 @@ def delete_data_from_table(file_path, index):
     :param file_path: путь к файлу .xlsx
     :param index: удаляемая строка (нумерация как в excel таблице)
     """
+    if index == '':
+        messagebox.showerror('Ошибка', 'Индекс не выбран!')
+        return
     wb = openpyxl.load_workbook(file_path)
     ws = wb.active
     rows = ws.max_row
-    ws.delete_rows(idx=index, amount=1)
+    ws.delete_rows(idx=int(index), amount=1)
     wb.save(file_path)
+    messagebox.showinfo('Успех', 'Изменения успешно внесены!\n Для отображения изменений вернитесь в главное меню'
+                                 ' и нажмите кнопку Начать')
 
 
 def edit_data_in_table(file_path, new_data, cell):
@@ -98,8 +112,3 @@ def edit_data_in_table(file_path, new_data, cell):
     ws = wb.active
     ws[cell] = new_data
     ws.save(file_path)
-
-
-# df_marks = pd.DataFrame({'name': ['Somu', 'Kiku', 'Amol', 'Lini'], 'physics': [68, 74, 77, 78],
-# 'chemistry': [84, 56, 73, 69], 'algebra': [78, 88, 82, 87]})
-# add_data_to_table(open_file(), [(1000, 300)])

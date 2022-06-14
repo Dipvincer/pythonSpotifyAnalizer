@@ -131,8 +131,10 @@ def main_window():
         vs = StringVar()
         lbl = StringVar()
         array = [name, a, k, g, c, y, al, bpm, l, dl, p, m, vs, lbl]
+        entrys = []
         for i in range(len(array)):
-            tki.Entry(root_c, textvariable=array[i]).place(x=230, y=52 + 30 * (i + 1))
+            entrys.append(tki.Entry(root_c, textvariable=array[i]))
+            entrys[i].place(x=230, y=52 + 30 * (i + 1))
         change = tki.Button(root_c, text='Изменить', font=(font, 16),
                             bg=background_color, fg=button_color).place(x=400, y=250)
 
@@ -141,7 +143,7 @@ def main_window():
         Добавление новых записей в таблицу
         """
         columns = ['Название', 'Артист', 'Коллаборация', 'Жанр', 'Страна', 'Год', 'Альбом', 'BPM', 'Громкость', 'Длина',
-                   'Популярность', 'Прослушиваний в месяц', 'Прослушиваний всего', 'Лейбл']
+                   'Популярность', 'Прослуш. в месяц', 'Прослуш. всего', 'Лейбл']
         num = len(df)
         root_c = tki.Toplevel(root3)
 
@@ -152,32 +154,19 @@ def main_window():
         for i in range(len(columns)):
             tki.Label(root_c, text=columns[i], font=(font, 16),
                       bg=background_color, fg=button_color).place(x=10, y=0 + 35 * i)
-        name = StringVar()
-        a = StringVar()
-        k = StringVar()
-        g = StringVar()
-        c = StringVar()
-        y = StringVar()
-        al = StringVar()
-        bpm = StringVar()
-        l = StringVar()
-        dl = StringVar()
-        p = StringVar()
-        m = StringVar()
-        vs = StringVar()
-        lbl = StringVar()
-        array = [name, a, k, g, c, y, al, bpm, l, dl, p, m, vs, lbl]
-        for i in range(len(array)):
-            tki.Entry(root_c, textvariable=array[i]).place(x=230, y=2 + 35 * i)
+        entrys = []
+        for i in range(14):
+            entrys.append(tki.Entry(root_c))
+            entrys[i].place(x=230, y=2 + 35 * i)
         change = tki.Button(root_c, text='Добавить', font=(font, 16),
-                            bg=background_color, fg=button_color).place(x=400, y=250)
+                            bg=background_color, fg=button_color,
+                            command=lambda: tc.add_data_to_table(file_name, [elem.get() for elem in entrys])).\
+            place(x=400, y=230)
 
     def option_del():
         """
         Удаление строки из таблицы
         """
-        columns = ['Название', 'Артист', 'Коллаборация', 'Жанр', 'Страна', 'Год', 'Альбом', 'BPM', 'Громкость', 'Длина',
-                   'Популярность', 'Прослушиваний в месяц', 'Прослушиваний всего', 'Лейбл']
         num = len(df)
         root_c = tki.Toplevel(root3)
         root_c.geometry('500x100')
@@ -191,7 +180,8 @@ def main_window():
         vibor = ttk.Combobox(root_c, values=value)
         vibor.grid(row=1, column=0)
         change = tki.Button(root_c, text='Удалить', font=(font, 16),
-                            bg=background_color, fg=button_color).grid(row=1, column=1)
+                            bg=background_color, fg=button_color,
+                            command=lambda: tc.delete_data_from_table(file_name, vibor.get())).grid(row=1, column=1)
 
     def open_file():
         """
@@ -301,12 +291,11 @@ def main_window():
     def reports_window():
         """Окно отчетов"""
         root_rep = tki.Toplevel(root3)
-        root_rep.geometry('620x500')
         root_rep.title('Отчеты')
         root_rep.resizable(False, False)
         root_rep.configure(bg=background_color)
         note = ttk.Notebook(root_rep)
-        note.pack()
+        note.grid()
         tab1 = tki.Frame(note, height=500, width=620, bg=background_color)
         tab2 = tki.Frame(note, height=500, width=620, bg=background_color)
         tab3 = tki.Frame(note, height=500, width=620, bg=background_color)
@@ -323,7 +312,7 @@ def main_window():
 
         mood = ['Happy', 'Sad']
         combo_mood = ttk.Combobox(tab1, state='readonly', values=mood)
-        combo_mood.grid(row=1, column=2)
+        combo_mood.grid(row=1, column=2, padx=5)
         combo_mood.current(0)
 
         tki.Button(tab1, text='My wave', font=(font, 16),
@@ -347,7 +336,7 @@ def main_window():
         years = list(set(list(df['Date_of_release'])))
         years.sort()
         combo_years = ttk.Combobox(tab1, state='readonly', values=years)
-        combo_years.grid(row=4, column=2)
+        combo_years.grid(row=4, column=2, padx=5)
         combo_years.current(len(years) - 1)
 
         tki.Button(tab1, text='User`s choice', font=(font, 16),
@@ -421,20 +410,22 @@ def main_window():
                    command=lambda: show_report(root_rep, 'Average genre')).\
             grid(row=3, column=0, padx=5, pady=5, sticky=W)
 
-    button_edit = tki.Button(root3, text='Редактировать запись', font=(font, 16)
-                             , bg=button_color, fg='white', command=option_change)
-    button_edit.place(x=10, y=10)
-    button_add = tki.Button(root3, text='Добавить запись', font=(font, 16)
-                            , bg=button_color, fg='white', command=option_add)
-    button_add.place(x=10, y=50)
-    button_del = tki.Button(root3, text='Удалить запись', font=(font, 16)
-                            , bg=button_color, fg='white', command=option_del)
-    button_del.place(x=10, y=90)
+    tki.Button(root3, text='Добавить запись', font=(font, 16),
+               bg=button_color, fg='white', compound=tki.RIGHT,
+               command=option_add).place(x=10, y=10)
+
+    tki.Button(root3, text='Удалить запись', font=(font, 16),
+               bg=button_color, fg='white',
+               command=option_del).place(x=10, y=60)
+
+    tki.Button(root3, text='Редактировать запись', font=(font, 16),
+               bg=button_color, fg='white', command=option_change).place(x=10, y=110)
+
     button_report = tki.Button(root3, text='Создание отчетов', font=(font, 16)
                                , bg=button_color, fg='white', command=reports_window)
     button_report.place(x=227, y=170)
 
-    b = tki.Button(root3, text='Назад', font=(font, 12)
+    b = tki.Button(root3, text='Назад', font=(font, 14)
                    , bg=button_color, fg='white', command=go_back)
     b.place(x=550, y=10)
 

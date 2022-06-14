@@ -1,3 +1,5 @@
+4                   13
+45                  121
 atl hip hop         1012311414
 australian pop      198260449
 big room            148427298
@@ -19,4 +21,4 @@ r&b en espanol      300331865
 reggaeton           1304858383
 reggaeton flow      923154617
 trap music          985873570
-Total               896252393
+Total               818317409
