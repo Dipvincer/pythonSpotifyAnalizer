@@ -33,6 +33,7 @@ def plot_bar_genre_artist_count(choice, path, excel_data_df):
                                 color='#191414',
                                 rotation=0,
                                 verticalalignment='center')
+
     global_path = os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
     fig.savefig(global_path, bbox_inches='tight')
     return global_path
