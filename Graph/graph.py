@@ -35,7 +35,7 @@ def plot_bar_genre_artist_count(choice, path, excel_data_df):
                                 color='#191414',
                                 rotation=0,
                                 verticalalignment='center')
-    fig.savefig('GraphImages/' + path)
+    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
 
 
@@ -56,9 +56,10 @@ def pie_genre_count(path, excel_data_df):
             num[i] += 1
     genre = num.keys()
     count_genre = num.values()
-    plt.pie(count_genre)
-    plt.legend(bbox_to_anchor=(-0.16, 0.4, 0.25, 0.25), labels=genre)
-    plt.savefig('GraphImages/' + path)
+    fig, ax = plt.subplots()
+    ax.pie(count_genre,)
+    ax.legend(bbox_to_anchor = (-0.16, 0.4, 0.1, 0.1), labels = genre )
+    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
 
 
@@ -72,8 +73,9 @@ def loudness_energy(path, excel_data_df):
     """
     loud = excel_data_df['Loudness..dB..']
     beat = excel_data_df['Beats.Per.Minute']
-    plt.scatter(x=loud, y=beat, marker='o', c='#1DB954', edgecolor='#191414')
-    plt.savefig('GraphImages/' + path)
+    fig, ax = plt.subplots()
+    ax.scatter(x=loud, y=beat, marker='o', c='#1DB954', edgecolor='#191414')
+    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
 
 
@@ -109,9 +111,10 @@ def mean_monthaud_per_genre(path, excel_data_df):
         newone.append(i)
     for i in range(len(newone)):
         newone[i] = newone[i]/numb2[i]
-    plt.pie(newone,)
-    plt.legend(bbox_to_anchor=(-0.16, 0.4, 0.25, 0.25), labels=num.keys())
-    plt.savefig('GraphImages/' + path)
+    fig, ax = plt.subplots()
+    ax.pie(newone,)
+    ax.legend(bbox_to_anchor=(-0.16, 0.4, 0.25, 0.25), labels=num.keys())
+    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
 
 
@@ -125,7 +128,7 @@ def whisker_all(path, excel_data_df):
     """
     excel_data_df.plot(kind='box', subplots=True)
     plt.gcf().set_size_inches(30,30)
-    plt.savefig('GraphImages/' + path)
+    plt.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
 
 
@@ -161,8 +164,9 @@ def mean_len(path, excel_data_df):
     mean = []
     for i in range(len(full_len)):
         mean.append(full_len[i]/full_num[i])
-    plt.bar(year_plot, mean)
-    plt.savefig('GraphImages/' + path)
+    fig, ax = plt.subplots()
+    ax.bar(year_plot,mean)
+    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
 
 
@@ -181,8 +185,9 @@ def country_pie(path, excel_data_df):
             dictionary[i] = 1
         else:
             dictionary[i] += 1
-    plt.pie(dictionary.values(), labels=dictionary.keys())
-    plt.savefig('GraphImages/' + path)
+    fig, ax = plt.subplots()
+    ax.pie(dictionary.values(),labels=dictionary.keys())
+    fig.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
 
 
@@ -215,5 +220,5 @@ def bar_average_length(path, data):
     plt.bar(x, y)
     ax.set_xlabel("Год")
     ax.set_ylabel("Длина трека")
-    plt.savefig('GraphImages/' + path)
+    plt.savefig('GraphImages/' + path,bbox_inches = 'tight')
     return os.path.split(os.path.abspath(__file__))[0] + '\\GraphImages\\' + path
